@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AdminModule } from './admin/admin.module';
-import { ClientModule } from './client/client.module';
 import { TypeOrmModule } from '@nestjs/typeorm/dist/typeorm.module';
+import { ConfigModule } from '@nestjs/config';
+import { ClientModule } from './client/client.module';
 
 @Module({
   imports: [
-    AdminModule,
     ClientModule,
+    AdminModule,
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -18,8 +19,9 @@ import { TypeOrmModule } from '@nestjs/typeorm/dist/typeorm.module';
       database: 'license_nest',
       autoLoadEntities: true,
       synchronize: true,
-    })],
+    })
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [],
 })
-export class AppModule {}
+export class AppModule { }

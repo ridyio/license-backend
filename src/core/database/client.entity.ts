@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Purchase } from "./purchase.entity";
 
 @Entity()
@@ -6,22 +6,31 @@ export class Client {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    enabled?: boolean;
+    @Column({
+        default: true
+    })
+    enabled: boolean;
 
     @Column()
-    ip?: string;
+    ip: string;
+
+    @Column({
+        type: 'int',
+        default: 8080
+    })
+    port: number;
 
     @Column()
-    port?: number;
+    token: string;
 
-    @Column()
-    token?: string;
+    @CreateDateColumn({
+        type: 'timestamp'
+    })
+    firstVerifiedAt: number;
 
-    @Column('timestamp')
-    firstVerifiedAt?: number;
-
-    @Column('timestamp')
+    @UpdateDateColumn({
+        type: 'timestamp'
+    })
     lastVerifiedAt?: number;
 
     @ManyToOne(() => Purchase, purchase => purchase.clients)

@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Application } from "./application.entity";
 import { Client } from "./client.entity";
 
@@ -7,32 +7,49 @@ export class Purchase {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    purchaseCode?: string;
+    @Column({
+    })
+    purchaseCode: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     buyerUserName?: string;
 
-    @Column()
-    vip?: boolean;
+    @Column({
+        default: false
+    })
+    vip: boolean;
 
-    @Column()
-    enabled?: boolean;
+    @Column({
+        default: true
+    })
+    enabled: boolean;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     details?: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     email?: string;
 
-    @Column('tinyint')
-    licenseCount?: number;
+    @Column('tinyint', {
+        default: 1
+    })
+    licenseCount: number;
 
-    @Column('timestamp')
+    @CreateDateColumn({
+        type: 'timestamp'
+    })
     purchasedAt?: string;
 
-    @Column('float')
-    amountPaid?: number;
+    @Column('float', { 
+        default: 0.0
+    })
+    amountPaid: number;
 
     @ManyToOne(() => Application, application => application.purchases)
     application: Application;

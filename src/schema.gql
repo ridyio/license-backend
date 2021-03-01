@@ -1,0 +1,450 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Purchase {
+  id: ID!
+  licenseCount: Int!
+  purchasedAt: Timestamp
+  amountPaid: Float!
+  purchaseCode: String!
+  buyerUserName: String
+  vip: Boolean!
+  enabled: Boolean!
+  details: String
+  email: String
+  clients(
+    """Limit or page results."""
+    paging: OffsetPaging = {limit: 10}
+
+    """Specify to filter the records returned."""
+    filter: ClientFilter = {}
+
+    """Specify to sort results."""
+    sorting: [ClientSort!] = []
+  ): [Client!]!
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+input OffsetPaging {
+  """Limit the number of records returned"""
+  limit: Int
+
+  """Offset to start returning records from"""
+  offset: Int
+}
+
+input ClientFilter {
+  and: [ClientFilter!]
+  or: [ClientFilter!]
+  id: IDFilterComparison
+}
+
+input IDFilterComparison {
+  is: Boolean
+  isNot: Boolean
+  eq: ID
+  neq: ID
+  gt: ID
+  gte: ID
+  lt: ID
+  lte: ID
+  like: ID
+  notLike: ID
+  iLike: ID
+  notILike: ID
+  in: [ID!]
+  notIn: [ID!]
+}
+
+input ClientSort {
+  field: ClientSortFields!
+  direction: SortDirection!
+  nulls: SortNulls
+}
+
+enum ClientSortFields {
+  id
+}
+
+"""Sort Directions"""
+enum SortDirection {
+  ASC
+  DESC
+}
+
+"""Sort Nulls Options"""
+enum SortNulls {
+  NULLS_FIRST
+  NULLS_LAST
+}
+
+type Client {
+  id: ID!
+  port: Int!
+  firstVerifiedAt: Timestamp!
+  lastVerifiedAt: Timestamp
+  ip: String!
+  token: String!
+  enabled: Boolean!
+  purchase: Purchase!
+}
+
+type DeleteManyResponse {
+  """The number of records deleted."""
+  deletedCount: Int!
+}
+
+type ClientDeleteResponse {
+  id: ID
+  port: Int
+  firstVerifiedAt: Timestamp
+  lastVerifiedAt: Timestamp
+  ip: String
+  token: String
+  enabled: Boolean
+}
+
+type UpdateManyResponse {
+  """The number of records updated."""
+  updatedCount: Int!
+}
+
+type ClientEdge {
+  """The node containing the Client"""
+  node: Client!
+
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+}
+
+"""Cursor for paging through collections"""
+scalar ConnectionCursor
+
+type PageInfo {
+  """true if paging forward and there are more records."""
+  hasNextPage: Boolean
+
+  """true if paging backwards and there are more records."""
+  hasPreviousPage: Boolean
+
+  """The cursor of the first returned record."""
+  startCursor: ConnectionCursor
+
+  """The cursor of the last returned record."""
+  endCursor: ConnectionCursor
+}
+
+type ClientConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [ClientEdge!]!
+}
+
+type ClientCountAggregate {
+  id: Int
+}
+
+type ClientSumAggregate {
+  id: Float
+}
+
+type ClientAvgAggregate {
+  id: Float
+}
+
+type ClientMinAggregate {
+  id: ID
+}
+
+type ClientMaxAggregate {
+  id: ID
+}
+
+type PurchaseDeleteResponse {
+  id: ID
+  licenseCount: Int
+  purchasedAt: Timestamp
+  amountPaid: Float
+  purchaseCode: String
+  buyerUserName: String
+  vip: Boolean
+  enabled: Boolean
+  details: String
+  email: String
+}
+
+type PurchaseEdge {
+  """The node containing the Purchase"""
+  node: Purchase!
+
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+}
+
+type PurchaseConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [PurchaseEdge!]!
+}
+
+type PurchaseCountAggregate {
+  id: Int
+}
+
+type PurchaseSumAggregate {
+  id: Float
+}
+
+type PurchaseAvgAggregate {
+  id: Float
+}
+
+type PurchaseMinAggregate {
+  id: ID
+}
+
+type PurchaseMaxAggregate {
+  id: ID
+}
+
+type Query {
+  client(
+    """The id of the record to find."""
+    id: ID!
+  ): Client
+  clients(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: ClientFilter = {}
+
+    """Specify to sort results."""
+    sorting: [ClientSort!] = []
+  ): ClientConnection!
+  purchase(
+    """The id of the record to find."""
+    id: ID!
+  ): Purchase
+  purchases(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: PurchaseFilter = {}
+
+    """Specify to sort results."""
+    sorting: [PurchaseSort!] = []
+  ): PurchaseConnection!
+}
+
+input CursorPaging {
+  """Paginate before opaque cursor"""
+  before: ConnectionCursor
+
+  """Paginate after opaque cursor"""
+  after: ConnectionCursor
+
+  """Paginate first"""
+  first: Int
+
+  """Paginate last"""
+  last: Int
+}
+
+input PurchaseFilter {
+  and: [PurchaseFilter!]
+  or: [PurchaseFilter!]
+  id: IDFilterComparison
+}
+
+input PurchaseSort {
+  field: PurchaseSortFields!
+  direction: SortDirection!
+  nulls: SortNulls
+}
+
+enum PurchaseSortFields {
+  id
+}
+
+type Mutation {
+  deleteOneClient(input: DeleteOneInput!): ClientDeleteResponse!
+  deleteManyClients(input: DeleteManyClientsInput!): DeleteManyResponse!
+  updateOneClient(input: UpdateOneClientInput!): Client!
+  updateManyClients(input: UpdateManyClientsInput!): UpdateManyResponse!
+  createOneClient(input: CreateOneClientInput!): Client!
+  createManyClients(input: CreateManyClientsInput!): [Client!]!
+  removePurchaseFromClient(input: RelationInput!): Client!
+  setPurchaseOnClient(input: RelationInput!): Client!
+  deleteOnePurchase(input: DeleteOneInput!): PurchaseDeleteResponse!
+  deleteManyPurchases(input: DeleteManyPurchasesInput!): DeleteManyResponse!
+  updateOnePurchase(input: UpdateOnePurchaseInput!): Purchase!
+  updateManyPurchases(input: UpdateManyPurchasesInput!): UpdateManyResponse!
+  createOnePurchase(input: CreateOnePurchaseInput!): Purchase!
+  createManyPurchases(input: CreateManyPurchasesInput!): [Purchase!]!
+  removeClientsFromPurchase(input: RelationsInput!): Purchase!
+  addClientsToPurchase(input: RelationsInput!): Purchase!
+}
+
+input DeleteOneInput {
+  """The id of the record to delete."""
+  id: ID!
+}
+
+input DeleteManyClientsInput {
+  """Filter to find records to delete"""
+  filter: ClientDeleteFilter!
+}
+
+input ClientDeleteFilter {
+  and: [ClientDeleteFilter!]
+  or: [ClientDeleteFilter!]
+  id: IDFilterComparison
+}
+
+input UpdateOneClientInput {
+  """The id of the record to update"""
+  id: ID!
+
+  """The update to apply."""
+  update: UpdateClient!
+}
+
+input UpdateClient {
+  id: ID
+  port: Int
+  firstVerifiedAt: Timestamp
+  lastVerifiedAt: Timestamp
+  ip: String
+  token: String
+  enabled: Boolean
+}
+
+input UpdateManyClientsInput {
+  """Filter used to find fields to update"""
+  filter: ClientUpdateFilter!
+
+  """The update to apply to all records found using the filter"""
+  update: UpdateClient!
+}
+
+input ClientUpdateFilter {
+  and: [ClientUpdateFilter!]
+  or: [ClientUpdateFilter!]
+  id: IDFilterComparison
+}
+
+input CreateOneClientInput {
+  """The record to create"""
+  client: CreateClient!
+}
+
+input CreateClient {
+  id: ID
+  port: Int
+  firstVerifiedAt: Timestamp
+  lastVerifiedAt: Timestamp
+  ip: String
+  token: String
+  enabled: Boolean
+}
+
+input CreateManyClientsInput {
+  """Array of records to create"""
+  clients: [CreateClient!]!
+}
+
+input RelationInput {
+  """The id of the record."""
+  id: ID!
+
+  """The id of relation."""
+  relationId: ID!
+}
+
+input DeleteManyPurchasesInput {
+  """Filter to find records to delete"""
+  filter: PurchaseDeleteFilter!
+}
+
+input PurchaseDeleteFilter {
+  and: [PurchaseDeleteFilter!]
+  or: [PurchaseDeleteFilter!]
+  id: IDFilterComparison
+}
+
+input UpdateOnePurchaseInput {
+  """The id of the record to update"""
+  id: ID!
+
+  """The update to apply."""
+  update: UpdatePurchase!
+}
+
+input UpdatePurchase {
+  id: ID
+  licenseCount: Int
+  purchasedAt: Timestamp
+  amountPaid: Float
+  purchaseCode: String
+  buyerUserName: String
+  vip: Boolean
+  enabled: Boolean
+  details: String
+  email: String
+}
+
+input UpdateManyPurchasesInput {
+  """Filter used to find fields to update"""
+  filter: PurchaseUpdateFilter!
+
+  """The update to apply to all records found using the filter"""
+  update: UpdatePurchase!
+}
+
+input PurchaseUpdateFilter {
+  and: [PurchaseUpdateFilter!]
+  or: [PurchaseUpdateFilter!]
+  id: IDFilterComparison
+}
+
+input CreateOnePurchaseInput {
+  """The record to create"""
+  purchase: CreatePurchase!
+}
+
+input CreatePurchase {
+  id: ID
+  licenseCount: Int
+  purchasedAt: Timestamp
+  amountPaid: Float
+  purchaseCode: String
+  buyerUserName: String
+  vip: Boolean
+  enabled: Boolean
+  details: String
+  email: String
+}
+
+input CreateManyPurchasesInput {
+  """Array of records to create"""
+  purchases: [CreatePurchase!]!
+}
+
+input RelationsInput {
+  """The id of the record."""
+  id: ID!
+
+  """The ids of the relations."""
+  relationIds: [ID!]!
+}
