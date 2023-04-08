@@ -19,7 +19,7 @@ import { EnvatoModule } from './envato/envato.module';
       password: process.env.MYSQL_PASSWORD ?? 'defaultpassword',
       database: process.env.MYSQL_DATABASE ?? 'license_nest',
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
     }),
   ],
   controllers: [AppController],
