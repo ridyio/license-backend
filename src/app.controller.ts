@@ -5,10 +5,15 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 @Controller()
 export class AppController {
   constructor(private appService: AppService) {}
+
+  @Get()
+  async root(): Promise<string> {
+    return '✅ Running!';
+  }
+
   @Get('verify')
   async verify(
     @Req() req: FastifyRequest<{ Querystring: IVerifyRequest }>,
-    @Res() res: FastifyReply,
   ): Promise<IVerifyResponse> {
     return this.appService.verify({
       purchaseCode: req.query.purchase_code,
@@ -21,7 +26,6 @@ export class AppController {
   @Get('disable_one')
   async disableOne(
     @Req() req: FastifyRequest<{ Querystring: IDisableClientRequest }>,
-    @Res() res: FastifyReply,
   ): Promise<IDisableClientResponse> {
     await this.appService.disableClient({
       ip: req.query.ip,
@@ -32,6 +36,7 @@ export class AppController {
     };
   }
 }
+
 export interface IVerifyRequest {
   purchase_code: string;
   port: number;
