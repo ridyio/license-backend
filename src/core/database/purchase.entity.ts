@@ -40,7 +40,7 @@ export class PurchaseEntity {
   })
   details?: string;
 
-  @Column({
+  @Column('text', {
     nullable: true,
   })
   email?: string;

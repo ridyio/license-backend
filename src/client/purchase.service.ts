@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 export class PurchaseService {
   constructor(
     @InjectRepository(PurchaseEntity)
-    private purchaseRepository: Repository<PurchaseEntity>,
+    public purchaseRepository: Repository<PurchaseEntity>,
   ) {}
 
   async findWithPurchaseCode(
@@ -26,6 +26,7 @@ export class PurchaseService {
     applicationId: number;
     sale: Sale;
     purchaseCode: string;
+    email?: string;
   }): Promise<PurchaseEntity> {
     return this.purchaseRepository.save({
       applicationId: input.applicationId,
@@ -33,6 +34,7 @@ export class PurchaseService {
       buyer: input.sale.buyer,
       amount_paid: input.sale.amount,
       purchased_at: new Date(input.sale.sold_at),
+      email: input.email,
       license_count: 1,
     });
   }

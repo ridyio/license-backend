@@ -31,24 +31,33 @@ export class AppService {
           sale.item.id,
         );
         if (application === undefined) {
-          throw new Error('It seems to be an Envato application but not taxi.');
+          return {
+            status: 'FAILED',
+            message: 'It seems to be an Envato application but not ours.',
+          };
         }
         purchase = await this.purchaseService.insertPurchaseRecord({
           applicationId: application.id,
           sale: sale,
           purchaseCode: input.purchaseCode,
+          email: input.email,
         });
       }
       if (!purchase.enabled) {
-        Logger.log(`Purchase Code is being disabled ${input.purchaseCode}!`);
+        Logger.log(`Purchase Code is disabled ${input.purchaseCode}!`);
         return {
           status: 'FAILED',
-          message: 'Purchase Code is being disabled!',
+          message: 'Purchase code is disabled!',
         };
       }
       const clients = await this.clientService.findClientsByPurchaseId(
         purchase.id,
       );
+      if (purchase.email.includes(input.email) == false) {
+        this.purchaseService.purchaseRepository.update(purchase.id, {
+          email: purchase.email + ',' + input.email,
+        });
+      }
       let disabledCount = 0;
       for (const client of clients) {
         if (client.ip === input.ip && client.enabled === true) {
