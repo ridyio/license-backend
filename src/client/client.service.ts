@@ -1,8 +1,8 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { firstValueFrom } from 'rxjs';
 import { ClientEntity } from 'src/core/database/client.entity';
-import { PurchaseEntity } from 'src/core/database/purchase.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -43,7 +43,7 @@ export class ClientService {
   }
 
   async disableClient(ip: string): Promise<boolean> {
-    await this.clientRepository.update(
+    const updateResult = await this.clientRepository.update(
       {
         ip,
       },
@@ -51,6 +51,13 @@ export class ClientService {
         enabled: false,
       },
     );
-    return true;
+    if (updateResult.affected > 0) {
+      firstValueFrom(
+        this.httpService.post(
+          `http://${ip.replace('::ffff:', '')}:4001/reconfig`,
+        ),
+      );
+    }
+    return updateResult.affected > 0;
   }
 }
