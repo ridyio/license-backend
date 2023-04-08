@@ -65,7 +65,9 @@ export class PurchaseEntity {
   @ManyToOne(() => ApplicationEntity, (application) => application.purchases)
   application: ApplicationEntity;
 
-  @Column()
+  @Column({
+    name: 'application_id',
+  })
   applicationId: number;
 
   @OneToMany(() => ClientEntity, (client) => client.purchase)
