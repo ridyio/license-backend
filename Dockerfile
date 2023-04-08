@@ -7,7 +7,7 @@ RUN npm run build
 
 FROM node:18-alpine
 WORKDIR /app
-COPY --from=build /app/dist ./
+COPY --from=build /app/package.json /app/package-lock.json /app/dist ./
 RUN npm i --force
 RUN npm i mysql
 EXPOSE 3000
