@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ApplicationEntity } from 'src/core/database/application.entity';
+import { ApplicationEntity } from '../core/database/application.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -11,6 +11,8 @@ export class ApplicationService {
   ) {}
 
   async getByItemId(itemId: number): Promise<ApplicationEntity | null> {
-    return await this.applicationRepository.findOne({ envatoItemCode: itemId });
+    return await this.applicationRepository.findOne({
+      where: { envatoItemCode: itemId },
+    });
   }
 }

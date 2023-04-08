@@ -14,14 +14,12 @@ export class PurchaseService {
   async findWithPurchaseCode(
     purchaseCode: string,
   ): Promise<PurchaseEntity | null> {
-    return await this.purchaseRepository.findOne(
-      {
-        purchaseCode,
+    return await this.purchaseRepository.findOne({
+      where: { purchaseCode },
+      relations: {
+        clients: true,
       },
-      {
-        relations: ['clients'],
-      },
-    );
+    });
   }
 
   async insertPurchaseRecord(input: {

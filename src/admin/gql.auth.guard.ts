@@ -1,6 +1,9 @@
-import { ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { AuthenticationError } from 'apollo-server';
 import { AuthGuard } from '@nestjs/passport';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -12,20 +15,16 @@ export class GqlAuthGuard extends AuthGuard('jwt') {
     const ctx = GqlExecutionContext.create(context);
     const { req } = ctx.getContext();
 
-    return super.canActivate(
-      new ExecutionContextHost([req]),
-    );
+    return super.canActivate(new ExecutionContextHost([req]));
   }
 
   handleRequest(err: any, user: any) {
     if (err || !user) {
-      throw err || new AuthenticationError('GqlAuthGuard');
+      throw err || new ForbiddenException('GqlAuthGuard');
     }
     return user;
   }
 }
-
-
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -33,7 +32,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: 'secret'
+      secretOrKey: 'secret',
     });
   }
 
@@ -42,4 +41,4 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 }
 
-export type AuthenticatedUser = { id: number; };
+export type AuthenticatedUser = { id: number };

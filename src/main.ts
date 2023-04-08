@@ -4,6 +4,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const adapter = new FastifyAdapter();
@@ -13,6 +14,8 @@ async function bootstrap() {
   );
   app.enableCors();
   app.enableShutdownHooks();
-  await app.listen(3000);
+  await app.listen(3000, '0.0.0.0', () => {
+    Logger.log(`Listening at http://localhost:${3000}`, 'Fleet API');
+  });
 }
 bootstrap();
