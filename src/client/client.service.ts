@@ -1,38 +1,56 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Client } from 'src/core/database/client.entity';
-import { Purchase } from 'src/core/database/purchase.entity';
+import { ClientEntity } from 'src/core/database/client.entity';
+import { PurchaseEntity } from 'src/core/database/purchase.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class ClientService {
-    constructor(
-        @InjectRepository(Client)
-        private clientRepository: Repository<Client>
-    ) {}
+  constructor(
+    @InjectRepository(ClientEntity)
+    private clientRepository: Repository<ClientEntity>,
+    private httpService: HttpService,
+  ) {}
 
-    async updateClientVerificationInfo(id: number, port: number): Promise<void> {
-        await this.clientRepository.update(id, {port: port});
-    }
+  findClientsByPurchaseId(purchaseId: number): Promise<ClientEntity[]> {
+    return this.clientRepository.find({
+      where: {
+        purchaseId,
+      },
+    });
+  }
 
-    async verifyNewClient(purchase: Purchase, ip: string, token: string, port: number): Promise<void> {
-        await this.clientRepository.save({
-            purchase: purchase,
-            ip: ip,
-            token: token,
-            port: port
-        });
-    }
+  async updateClientVerificationInfo(
+    clientId: number,
+    update: Partial<ClientEntity>,
+  ): Promise<void> {
+    await this.clientRepository.update(clientId, update);
+  }
 
-    async disableClient(ip: string, purchase?: Purchase) {
-        const query: Partial<Client> = {
-            ip: ip
-        };
-        if(purchase != null) {
-            query.purchase = purchase;
-        }
-        this.clientRepository.update(query, {
-            enabled: false
-        });
-    }
- }
+  async verifyClient(input: {
+    purchaseId: number;
+    ip: string;
+    token: string;
+    port: number;
+  }): Promise<ClientEntity> {
+    return this.clientRepository.save({
+      purchaseId: input.purchaseId,
+      ip: input.ip,
+      token: input.token,
+      port: input.port,
+    });
+  }
+
+  async disableClient(ip: string): Promise<boolean> {
+    await this.clientRepository.update(
+      {
+        ip,
+      },
+      {
+        enabled: false,
+      },
+    );
+    return true;
+  }
+}

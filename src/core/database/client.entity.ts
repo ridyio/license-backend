@@ -1,38 +1,50 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Purchase } from "./purchase.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { PurchaseEntity } from './purchase.entity';
 
-@Entity()
-export class Client {
-    @PrimaryGeneratedColumn()
-    id: number;
+@Entity('client')
+export class ClientEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({
-        default: true
-    })
-    enabled: boolean;
+  @Column({
+    default: true,
+  })
+  enabled: boolean;
 
-    @Column()
-    ip: string;
+  @Column()
+  ip: string;
 
-    @Column({
-        type: 'int',
-        default: 8080
-    })
-    port: number;
+  @Column({
+    type: 'int',
+    default: 8080,
+  })
+  port: number;
 
-    @Column()
-    token: string;
+  @Column()
+  token: string;
 
-    @CreateDateColumn({
-        type: 'timestamp'
-    })
-    firstVerifiedAt: number;
+  @CreateDateColumn({
+    name: 'first_verified_at',
+  })
+  firstVerifiedAt: Date;
 
-    @UpdateDateColumn({
-        type: 'timestamp'
-    })
-    lastVerifiedAt?: number;
+  @UpdateDateColumn({
+    name: 'last_verified_at',
+  })
+  lastVerifiedAt?: Date;
 
-    @ManyToOne(() => Purchase, purchase => purchase.clients)
-    purchase: Purchase;
+  @ManyToOne(() => PurchaseEntity, (purchase) => purchase.clients)
+  purchase: PurchaseEntity;
+
+  @Column({
+    name: 'purchase_id',
+  })
+  purchaseId: number;
 }

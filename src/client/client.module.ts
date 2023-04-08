@@ -6,13 +6,13 @@ import { Purchase } from 'src/core/database/purchase.entity';
 import { ApplicationService } from './application.service';
 import { ClientController } from './client.controller';
 import { ClientService } from './client.service';
-import { EnvatoService } from './envato.service';
+import { EnvatoService } from '../envato/envato.service';
 import { PurchaseService } from './purchase.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Application, Client, Purchase]),
-    HttpModule
+    HttpModule,
   ],
   controllers: [ClientController],
   providers: [
@@ -20,7 +20,7 @@ import { PurchaseService } from './purchase.service';
     ApplicationService,
     PurchaseService,
     ClientService,
-    EnvatoService
-  ]
+    EnvatoService,
+  ],
 })
-export class ClientModule { }
+export class ClientModule {}

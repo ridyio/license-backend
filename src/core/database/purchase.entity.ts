@@ -1,59 +1,73 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Application } from "./application.entity";
-import { Client } from "./client.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ApplicationEntity } from './application.entity';
+import { ClientEntity } from './client.entity';
 
-@Entity()
-export class Purchase {
-    @PrimaryGeneratedColumn()
-    id: number;
+@Entity('purchase')
+export class PurchaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({
-    })
-    purchaseCode: string;
+  @Column({
+    name: 'purchase_code',
+  })
+  purchaseCode: string;
 
-    @Column({
-        nullable: true
-    })
-    buyerUserName?: string;
+  @Column({
+    nullable: true,
+    name: 'buyer',
+  })
+  buyerUserName?: string;
 
-    @Column({
-        default: false
-    })
-    vip: boolean;
+  @Column({
+    default: false,
+  })
+  vip: boolean;
 
-    @Column({
-        default: true
-    })
-    enabled: boolean;
+  @Column({
+    default: true,
+  })
+  enabled: boolean;
 
-    @Column({
-        nullable: true
-    })
-    details?: string;
+  @Column({
+    nullable: true,
+  })
+  details?: string;
 
-    @Column({
-        nullable: true
-    })
-    email?: string;
+  @Column({
+    nullable: true,
+  })
+  email?: string;
 
-    @Column('tinyint', {
-        default: 1
-    })
-    licenseCount: number;
+  @Column('tinyint', {
+    name: 'license_count',
+    default: 1,
+  })
+  licenseCount: number;
 
-    @CreateDateColumn({
-        type: 'timestamp'
-    })
-    purchasedAt?: string;
+  @CreateDateColumn({
+    name: 'purchased_at',
+  })
+  purchasedAt?: Date;
 
-    @Column('float', { 
-        default: 0.0
-    })
-    amountPaid: number;
+  @Column('float', {
+    name: 'amount_paid',
+    default: 0.0,
+  })
+  amountPaid: number;
 
-    @ManyToOne(() => Application, application => application.purchases)
-    application: Application;
+  @ManyToOne(() => ApplicationEntity, (application) => application.purchases)
+  application: ApplicationEntity;
 
-    @OneToMany(() => Client, client => client.purchase)
-    clients: Client[];
+  @Column()
+  applicationId: number;
+
+  @OneToMany(() => ClientEntity, (client) => client.purchase)
+  clients: ClientEntity[];
 }

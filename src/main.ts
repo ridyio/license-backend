@@ -1,8 +1,8 @@
-import { value NestFactory } from '@nestjs/core';
-import { value AppModule } from './app.module';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
 import {
-  value FastifyAdapter,
-  value NestFastifyApplication,
+  FastifyAdapter,
+  NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 
 async function bootstrap() {

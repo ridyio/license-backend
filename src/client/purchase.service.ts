@@ -1,33 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Application } from 'src/core/database/application.entity';
-import { Purchase } from 'src/core/database/purchase.entity';
+import { PurchaseEntity } from 'src/core/database/purchase.entity';
 import Sale from 'src/core/model/sale';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class PurchaseService { 
-    constructor(
-        @InjectRepository(Purchase)
-        private purchaseRepository: Repository<Purchase>
-    ) {}
-    
-    async getFromPurchaseCode(purchaseCode: string): Promise<Purchase> {
-        return await this.purchaseRepository.findOne({
-            purchaseCode: purchaseCode
-        }, {
-            relations: ['clients']
-        })
-    }
+export class PurchaseService {
+  constructor(
+    @InjectRepository(PurchaseEntity)
+    private purchaseRepository: Repository<PurchaseEntity>,
+  ) {}
 
-    async insertPurchaseRecord(application: Application, sale: Sale, purchaseCode: string): Promise<Purchase> {
-        return await this.purchaseRepository.save({
-            application: application,
-            purchase_code: purchaseCode,
-            buyer: sale.buyer,
-            amount_paid: sale.amount,
-            purchased_at: sale.sold_at.split('+')[0],
-            license_count: 1
-        })
-    }
+  async findWithPurchaseCode(
+    purchaseCode: string,
+  ): Promise<PurchaseEntity | null> {
+    return await this.purchaseRepository.findOne(
+      {
+        purchaseCode,
+      },
+      {
+        relations: ['clients'],
+      },
+    );
+  }
+
+  async insertPurchaseRecord(input: {
+    applicationId: number;
+    sale: Sale;
+    purchaseCode: string;
+  }): Promise<PurchaseEntity> {
+    return this.purchaseRepository.save({
+      applicationId: input.applicationId,
+      purchase_code: input.purchaseCode,
+      buyer: input.sale.buyer,
+      amount_paid: input.sale.amount,
+      purchased_at: new Date(input.sale.sold_at),
+      license_count: 1,
+    });
+  }
 }

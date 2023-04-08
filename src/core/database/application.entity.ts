@@ -1,17 +1,19 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Purchase } from "./purchase.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { PurchaseEntity } from './purchase.entity';
 
 @Entity()
-export class Application {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class ApplicationEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column()
-    envatoId: number; 
+  @Column({
+    name: 'item_id',
+  })
+  envatoItemCode: number;
 
-    @OneToMany(() => Purchase, purchase => purchase.application)
-    purchases: Purchase[];
+  @OneToMany(() => PurchaseEntity, (purchase) => purchase.application)
+  purchases: PurchaseEntity[];
 }
