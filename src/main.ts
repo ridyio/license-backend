@@ -14,8 +14,9 @@ async function bootstrap() {
   );
   app.enableCors();
   app.enableShutdownHooks();
-  await app.listen(3000, '0.0.0.0', () => {
-    Logger.log(`Listening at http://localhost:${3000}`, 'Fleet API');
+  const port = process.env.MAIN_PORT || 3000;
+  await app.listen(port, '0.0.0.0', () => {
+    Logger.log(`Listening at http://localhost:${port}`, 'License API running');
   });
 }
 bootstrap();

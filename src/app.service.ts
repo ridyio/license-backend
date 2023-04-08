@@ -19,7 +19,7 @@ export class AppService {
 
   async verify(input: IVerifyInput): Promise<IVerifyResponse> {
     try {
-      console.log(
+      Logger.log(
         `server with ip ${input.ip}, Port ${input.port} and purchase code ${input.purchaseCode} has requested verification`,
       );
       let purchase = await this.purchaseService.findWithPurchaseCode(
@@ -40,7 +40,7 @@ export class AppService {
         });
       }
       if (!purchase.enabled) {
-        console.log(`Purchase Code is being disabled ${input.purchaseCode}!`);
+        Logger.log(`Purchase Code is being disabled ${input.purchaseCode}!`);
         return {
           status: 'FAILED',
           message: 'Purchase Code is being disabled!',
@@ -67,7 +67,7 @@ export class AppService {
         }
       }
       if (disabledCount > 3) {
-        console.log('Purchase Code Overused.');
+        Logger.log('Purchase Code Overused.');
         return {
           status: 'FAILED',
           message: `This purchase code is being used more than usual. Please contact ${process.env.CONTACT_EMAIL} with your purchase code for more information if needed.`,
