@@ -5,11 +5,17 @@ import { ConfigModule } from '@nestjs/config';
 import { ClientModule } from './client/client.module';
 import { AppService } from './app.service';
 import { EnvatoModule } from './envato/envato.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
     EnvatoModule,
     ClientModule,
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 10,
+    }),
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -23,6 +29,12 @@ import { EnvatoModule } from './envato/envato.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
