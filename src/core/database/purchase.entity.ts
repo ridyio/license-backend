@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -62,13 +63,16 @@ export class PurchaseEntity {
   })
   amountPaid: number;
 
-  @ManyToOne(() => ApplicationEntity, (application) => application.purchases)
+  @ManyToOne(
+    () => ApplicationEntity,
+    (application) => application.purchases,
+    {},
+  )
+  @JoinColumn({ name: 'application_id' })
   application: ApplicationEntity;
 
-  @Column({
-    name: 'application_id',
-  })
-  applicationId: number;
+  @Column()
+  application_id: number;
 
   @OneToMany(() => ClientEntity, (client) => client.purchase)
   clients: ClientEntity[];
