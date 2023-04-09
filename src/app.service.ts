@@ -53,9 +53,17 @@ export class AppService {
       const clients = await this.clientService.findClientsByPurchaseId(
         purchase.id,
       );
-      if (purchase.email.includes(input.email) == false) {
+      if (
+        input.email != null &&
+        purchase.email.includes(input.email) == false
+      ) {
         this.purchaseService.purchaseRepository.update(purchase.id, {
           email: purchase.email + ',' + input.email,
+        });
+      }
+      if (input.email == null && purchase.email == null) {
+        this.purchaseService.purchaseRepository.update(purchase.id, {
+          email: input.email,
         });
       }
       let disabledCount = 0;
