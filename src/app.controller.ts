@@ -16,7 +16,7 @@ export class AppController {
     @Req() req: FastifyRequest<{ Querystring: IVerifyRequest }>,
   ): Promise<IVerifyResponse> {
     return this.appService.verify({
-      purchaseCode: req.query.purchase_code,
+      purchaseCode: req.query.purchaseCode,
       port: req.query.port,
       ip: req.ip,
       email: req.query.email,
@@ -29,7 +29,7 @@ export class AppController {
   ): Promise<IDisableClientResponse> {
     await this.appService.disableClient({
       ip: req.query.ip,
-      purchaseCode: req.query.purchase_code,
+      purchaseCode: req.query.purchaseCode,
     });
     return {
       status: 'OK',
@@ -38,14 +38,14 @@ export class AppController {
 }
 
 export interface IVerifyRequest {
-  purchase_code: string;
+  purchaseCode: string;
   port: number;
   email?: string;
 }
 
 export interface IDisableClientRequest {
   ip: string;
-  purchase_code?: string;
+  purchaseCode?: string;
 }
 
 export interface IDisableClientResponse {
