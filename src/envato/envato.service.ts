@@ -17,7 +17,7 @@ export class EnvatoService {
         },
       ),
     );
-    if (sale.data.buyer === undefined) {
+    if (sale.data.buyer == null) {
       throw new Error('Invalid Purchase Code!');
     }
     return sale.data;

@@ -25,12 +25,12 @@ export class AppService {
       let purchase = await this.purchaseService.findWithPurchaseCode(
         input.purchaseCode,
       );
-      if (purchase === undefined) {
+      if (purchase == null) {
         const sale = await this.envatoService.getSaleInfo(input.purchaseCode);
         const application = await this.applicationService.getByItemId(
           sale.item.id,
         );
-        if (application === undefined) {
+        if (application == null) {
           return {
             status: 'FAILED',
             message: 'It seems to be an Envato application but not ours.',
@@ -118,7 +118,7 @@ export class AppService {
         const purchase = await this.purchaseService.findWithPurchaseCode(
           input.purchaseCode,
         );
-        if (purchase === undefined) {
+        if (purchase == null) {
           throw new Error('Purchase Code not found!');
         }
       }
