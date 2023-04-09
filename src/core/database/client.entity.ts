@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -41,6 +42,9 @@ export class ClientEntity {
   lastVerifiedAt?: Date;
 
   @ManyToOne(() => PurchaseEntity, (purchase) => purchase.clients)
+  @JoinColumn({
+    name: 'purchase_id',
+  })
   purchase: PurchaseEntity;
 
   @Column({
