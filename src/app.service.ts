@@ -55,13 +55,14 @@ export class AppService {
       );
       if (
         input.email != null &&
+        purchase.email != null &&
         purchase.email.includes(input.email) == false
       ) {
         this.purchaseService.purchaseRepository.update(purchase.id, {
           email: purchase.email + ',' + input.email,
         });
       }
-      if (input.email != null && purchase.email != null) {
+      if (input.email != null && purchase.email == null) {
         this.purchaseService.purchaseRepository.update(purchase.id, {
           email: input.email,
         });
