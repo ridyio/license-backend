@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ApplicationEntity } from 'src/core/database/application.entity';
 import { PurchaseEntity } from 'src/core/database/purchase.entity';
 import Sale from 'src/core/model/sale';
 import { Repository } from 'typeorm';
@@ -28,14 +29,14 @@ export class PurchaseService {
     purchaseCode: string;
     email?: string;
   }): Promise<PurchaseEntity> {
-    return this.purchaseRepository.save({
-      applicationId: input.applicationId,
-      purchase_code: input.purchaseCode,
-      buyer: input.sale.buyer,
-      amount_paid: input.sale.amount,
-      purchased_at: new Date(input.sale.sold_at),
-      email: input.email,
-      license_count: 1,
-    });
+    const purchase = new PurchaseEntity();
+    purchase.application_id = input.applicationId;
+    purchase.purchaseCode = input.purchaseCode;
+    purchase.buyerUserName = input.sale.buyer;
+    purchase.amountPaid = input.sale.amount;
+    purchase.purchasedAt = new Date(input.sale.sold_at);
+    purchase.email = input.email;
+    purchase.licenseCount = 1;
+    return await this.purchaseRepository.save(purchase);
   }
 }
