@@ -69,7 +69,7 @@ export class AppService {
       }
       let disabledCount = 0;
       for (const client of clients) {
-        if (client.ip === input.ip && client.enabled === true) {
+        if (client.ip.includes(input.ip) && client.enabled === true) {
           const _ = this.clientService.updateClientVerificationInfo(client.id, {
             port: input.port,
             lastVerifiedAt: new Date(),
